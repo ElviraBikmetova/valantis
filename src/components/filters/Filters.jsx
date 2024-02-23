@@ -5,11 +5,13 @@ import { Options } from "./Options";
 import { FIELDS } from "../../constants";
 import { useState } from "react";
 import { baseApi } from "../../store/services";
-import { useDispatch } from "react-redux";
-import { toggleIsFilter } from "../../store/filterSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { filter, toggleIsFilter } from "../../store/filterSlice";
 
 export const Filters = () => {
-    const [filter] = baseApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
+    const [filterItems] = baseApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
+    const { isFilter } = useSelector(filter)
+    // console.log('isFilter', isFilter)
     const [selectedFilter, setSelectedFilter] = useState(null)
     const [selectedItem, setSelectedItem] = useState(null)
     const dispatch = useDispatch()
@@ -22,8 +24,10 @@ export const Filters = () => {
     } = useForm()
 
     const selectFilter = (filter) => {
-        setSelectedFilter(filter)
-        Object.keys(FIELDS).filter(item => item !== filter).map(item => unregister(item))
+        if (!isFilter) {
+            setSelectedFilter(filter)
+            Object.keys(FIELDS).filter(item => item !== filter).map(item => unregister(item))
+        }
     }
 
     const resetFilter = () => {
@@ -33,12 +37,14 @@ export const Filters = () => {
     }
 
     const onSubmit = (formData) => {
-        if (formData.hasOwnProperty('price')) {
-            formData.price = +formData.price
+        if (!isFilter) {
+            if (formData.hasOwnProperty('price')) {
+                formData.price = +formData.price
+            }
+            filterItems(formData)
+            setSelectedItem(formData[Object.keys(formData)[0]])
+            dispatch(toggleIsFilter(true))
         }
-        filter(formData)
-        setSelectedItem(formData[Object.keys(formData)[0]])
-        dispatch(toggleIsFilter(true))
     }
 
     return (
