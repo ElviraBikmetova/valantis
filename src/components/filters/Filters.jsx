@@ -7,6 +7,8 @@ import { useState } from "react";
 import { baseApi } from "../../store/services";
 import { useDispatch, useSelector } from "react-redux";
 import { filter, toggleIsFilter } from "../../store/filterSlice";
+import { FilterItem } from "./FilterItem";
+import { Button, Form } from "antd";
 
 export const Filters = () => {
     const [filterItems] = baseApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
@@ -45,11 +47,24 @@ export const Filters = () => {
             setSelectedItem(formData[Object.keys(formData)[0]])
             dispatch(toggleIsFilter(true))
         }
+        console.log('formData', formData)
+    }
+
+    const onFinish = (values) => {
+        // if (!isFilter) {
+            // if (values.hasOwnProperty('price')) {
+            //     values.price = +values.price
+            // }
+            filterItems(values)
+            setSelectedItem(values[Object.keys(values)[0]])
+            dispatch(toggleIsFilter(true))
+        // }
+        console.log('formData', values)
     }
 
     return (
         <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            {/* <form onSubmit={handleSubmit(onSubmit)}>
                 {Object.keys(FIELDS).map((key) => {
                     return (
                         <div className={s.filter} key={key}>
@@ -60,16 +75,28 @@ export const Filters = () => {
                                     <span>{selectedItem}</span>
                                     <button onClick={() => resetFilter()}>X</button>
                                 </div>
-                                : <select className={s.select} id={key} {...selectedFilter === key && {...register(key)}}>
-                                    <option className={s.option} value=''>Выбрать</option>
-                                    <Options field={key}/>
-                                </select>)
+                                :
+                                <FilterItem field={key} identifier={key} register={register}/>
+
+                                )
                                 : null }
                         </div>
                     )})}
                 <button>Применить фильтр</button>
-            </form>
+            </form> */}
+            <Form onFinish={onFinish}>
+                {Object.keys(FIELDS).map(key => <FilterItem field={key} key={key} />)}
+                <Form.Item>
+                    <Button htmlType="submit">Применить фильтр</Button>
+                </Form.Item>
+            </Form>
         </div>
     )
 }
+
+                                {/* <select className={s.select} id={key} {...selectedFilter === key && {...register(key)}}>
+                                    <option className={s.option} value=''>Выбрать</option>
+                                    <Options field={key}/>
+                                </select> */}
+                                // selectedFilter === key && register
 
