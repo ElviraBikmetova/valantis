@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import md5 from "md5";
-import { limit } from '../components/products/Products';
+import md5 from "md5"
+import { LIMIT } from '../constants/constants'
 
 export const baseApi = createApi({
     reducerPath: 'baseApi',
@@ -13,7 +13,7 @@ export const baseApi = createApi({
             const date = new Date()
             const timestamp = date.toISOString().slice(0, 10).replace(/-/g, '')
             const xAuth = md5(`Valantis_${timestamp}`)
-            console.log(xAuth)
+            // console.log(xAuth)
             headers.set('X-Auth', xAuth)
             return headers
         },
@@ -29,7 +29,7 @@ export const baseApi = createApi({
             }),
             transformResponse: (response) => {
                 const uniqueIds = [...new Set(response.result)]
-                if (response.result.length < limit) {
+                if (response.result.length < LIMIT) {
                     return {isMaxLimit: true, ids: uniqueIds}
                 }
                 // if (response.result.length > limit) {
@@ -83,7 +83,7 @@ export const baseApi = createApi({
             }),
             transformResponse: (response) => {
                 const uniqueIds = [...new Set(response.result)]
-                if (response.result.length < limit) {
+                if (response.result.length < LIMIT) {
                     return {isMaxLimit: true, ids: uniqueIds}
                 }
                 return {isMaxLimit: false, ids: uniqueIds}
