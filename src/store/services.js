@@ -13,7 +13,7 @@ export const baseApi = createApi({
             const date = new Date()
             const timestamp = date.toISOString().slice(0, 10).replace(/-/g, '')
             const xAuth = md5(`Valantis_${timestamp}`)
-            // console.log(xAuth)
+            console.log(xAuth)
             headers.set('X-Auth', xAuth)
             return headers
         },
@@ -32,8 +32,20 @@ export const baseApi = createApi({
                 if (response.result.length < limit) {
                     return {isMaxLimit: true, ids: uniqueIds}
                 }
+                // if (response.result.length > limit) {
+                //     return {isMaxLimit: false, total: response.result.length, ids: uniqueIds.slice(0, 49)}
+                // }
                 return {isMaxLimit: false, ids: uniqueIds}
             }
+        }),
+        getIdsCount: builder.mutation({
+            query: () => ({
+                method: 'POST',
+                body: {
+                    action: 'get_ids'
+                }
+            }),
+            transformResponse: (response) => [...new Set(response.result)].length
         }),
         getItems: builder.mutation({
             query: (ids) => ({
@@ -48,7 +60,6 @@ export const baseApi = createApi({
                     if (!acc.find(item => item.id === current.id)) {
                         return [...acc, current]
                     }
-
                     return acc
                 }, [])
         }),
