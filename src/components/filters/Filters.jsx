@@ -1,102 +1,40 @@
-import { useForm } from "react-hook-form";
-import { v4 as uuidv4 } from 'uuid';
 import s from "./styles.module.scss"
-import { Options } from "./Options";
-import { FIELDS } from "../../constants";
+import { FIELDS } from "../../constants/constants";
 import { useState } from "react";
 import { baseApi } from "../../store/services";
-import { useDispatch, useSelector } from "react-redux";
-import { filter, toggleIsFilter } from "../../store/filterSlice";
+import { useDispatch } from "react-redux";
+import { toggleIsFilter } from "../../store/filterSlice";
 import { FilterItem } from "./FilterItem";
-import { Button, Form } from "antd";
+import { Form, Select } from "antd";
+import { SubmitButton } from "../ui/SubmitButton";
 
 export const Filters = () => {
+    const [selectedOption, setSelectedOption] = useState(null)
     const [filterItems] = baseApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
-    const { isFilter } = useSelector(filter)
-    // console.log('isFilter', isFilter)
-    const [selectedFilter, setSelectedFilter] = useState(null)
-    const [selectedItem, setSelectedItem] = useState(null)
     const dispatch = useDispatch()
-
-    const {
-        register,
-        unregister,
-        formState: { isValid },
-        handleSubmit
-    } = useForm()
-
-    const selectFilter = (filter) => {
-        if (!isFilter) {
-            setSelectedFilter(filter)
-            Object.keys(FIELDS).filter(item => item !== filter).map(item => unregister(item))
-        }
-    }
-
-    const resetFilter = () => {
-        setSelectedFilter(null)
-        setSelectedItem(null)
-        dispatch(toggleIsFilter(false))
-    }
-
-    const onSubmit = (formData) => {
-        if (!isFilter) {
-            if (formData.hasOwnProperty('price')) {
-                formData.price = +formData.price
-            }
-            filterItems(formData)
-            setSelectedItem(formData[Object.keys(formData)[0]])
-            dispatch(toggleIsFilter(true))
-        }
-        console.log('formData', formData)
-    }
+    const [form] = Form.useForm()
 
     const onFinish = (values) => {
-        // if (!isFilter) {
-            // if (values.hasOwnProperty('price')) {
-            //     values.price = +values.price
-            // }
-            filterItems(values)
-            setSelectedItem(values[Object.keys(values)[0]])
-            dispatch(toggleIsFilter(true))
-        // }
-        console.log('formData', values)
+        filterItems(values)
+        dispatch(toggleIsFilter(true))
     }
 
     return (
-        <div>
-            {/* <form onSubmit={handleSubmit(onSubmit)}>
-                {Object.keys(FIELDS).map((key) => {
-                    return (
-                        <div className={s.filter} key={key}>
-                            <label htmlFor={key}  onClick={() => selectFilter(key)}>{FIELDS[key]}</label>
-                            {selectedFilter === key
-                                ? (selectedItem
-                                ? <div>
-                                    <span>{selectedItem}</span>
-                                    <button onClick={() => resetFilter()}>X</button>
-                                </div>
-                                :
-                                <FilterItem field={key} identifier={key} register={register}/>
-
-                                )
-                                : null }
-                        </div>
-                    )})}
-                <button>Применить фильтр</button>
-            </form> */}
-            <Form onFinish={onFinish}>
-                {Object.keys(FIELDS).map(key => <FilterItem field={key} key={key} />)}
+        <div className={s.filters}>
+            <Select
+            className={s.fieldsSelect}
+            onChange={(value) => setSelectedOption(value)}
+            options={Object.keys(FIELDS).map((key) => { return {value: key, label: FIELDS[key]}})}
+            placeholder="Выберите параметр"
+            allowClear
+            onClear={() => dispatch(toggleIsFilter(false))}
+            />
+            <Form form={form} name='validateOnly' onFinish={onFinish} className={s.form} autoComplete="off">
+                {selectedOption && <FilterItem field={selectedOption}/>}
                 <Form.Item>
-                    <Button htmlType="submit">Применить фильтр</Button>
+                    <SubmitButton form={form}>Отфильтровать</SubmitButton>
                 </Form.Item>
             </Form>
         </div>
     )
 }
-
-                                {/* <select className={s.select} id={key} {...selectedFilter === key && {...register(key)}}>
-                                    <option className={s.option} value=''>Выбрать</option>
-                                    <Options field={key}/>
-                                </select> */}
-                                // selectedFilter === key && register
-

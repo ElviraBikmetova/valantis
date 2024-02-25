@@ -4,6 +4,14 @@
 
 }
 
+.filter {
+    display: flex;
+    justify-content: space-between;
+    max-width: 700px;
+    width: 100%;
+    // column-gap: 30px;
+}
+
 .list {
     display: flex;
     width: 100%;

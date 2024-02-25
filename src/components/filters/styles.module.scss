@@ -1,15 +1,23 @@
 
 
-.filter {
+.filters {
     display: flex;
-    flex-direction: column;
-    max-width: 300px;
+    justify-content: space-between;
+    max-width: 600px;
+    width: 100%;
 }
 
-.select {
-    max-width: 300px;
+.fieldsSelect {
+    width: 180px;
 }
 
-.option {
-    max-width: 300px;
+.itemSelect {
+    width: 250px !important;
+}
+
+.form {
+    display: flex;
+    justify-content: space-between;
+    max-width: 400px;
+    width: 100%;
 }
