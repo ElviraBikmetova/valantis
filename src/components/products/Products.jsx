@@ -5,18 +5,22 @@ import s from "./styles.module.scss"
 import { Filters } from "../filters/Filters";
 import { useSelector } from "react-redux";
 import { filter } from "../../store/filterSlice";
+import { Pagination } from "antd";
 
 export const limit = 50
 
 export function ProductList() {
+  const [getIdsCount, { data: idsCount }] = baseApi.useGetIdsCountMutation()
   const [getIds, { data: idsData }] = baseApi.useGetIdsMutation()
   const [getItems, { data: products }] = baseApi.useGetItemsMutation()
   const [_, { data: filteredIds }] = baseApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
   const { isFilter } = useSelector(filter)
-//   console.log('isFilter', isFilter)
+
 
   const offsetRef = useRef(0)
   const [isBack, setIsBack] = useState(false)
+
+//   console.log('isBack', isBack)
 
   const getProducts = (idsData) => {
     if (idsData) {
@@ -38,6 +42,7 @@ export function ProductList() {
 
 
   useEffect(() => {
+    getIdsCount()
     getIds({offset: offsetRef.current, limit})
   }, [])
 
@@ -45,18 +50,19 @@ export function ProductList() {
     getProducts(isFilter ? filteredIds : idsData)
   }, [isFilter ? filteredIds : idsData])
 
-  const goToPreviousPage = () => {
-    if (offsetRef.current > limit) {
-        getIds({offset: offsetRef.current - limit, limit})
-        offsetRef.current -= limit
-        setIsBack(true)
-    }
-  }
+//   console.log('offsetRef.current', offsetRef.current)
 
-  const goToNextPage = () => {
-    getIds({offset: offsetRef.current + limit, limit})
-    offsetRef.current += limit
-    setIsBack(false)
+  const handlePageChange = (page, pageSize) => {
+    const newOffset = (page - 1) * pageSize + (offsetRef.current % pageSize)  // Вычисляем новое смещение
+    getIds({ offset: newOffset, limit }) // Вызываем вашу функцию для загрузки данных
+    if (newOffset < offsetRef.current) {
+        // Движение назад
+        setIsBack(true)
+      } else {
+        // Движение вперёд или на ту же страницу
+        setIsBack(false)
+      }
+    offsetRef.current = newOffset // Обновляем значение смещения в ref
   }
 
   return (
@@ -65,8 +71,15 @@ export function ProductList() {
         {products && products.map(item => <ProductItem key={item.id} productData={item}/>)}
         </div>
         <div className={s.pagination}>
-            <button className={s.btn} onClick={goToPreviousPage} disabled={offsetRef.current < limit}>Назад</button>
-            <button className={s.btn} onClick={goToNextPage} disabled={products?.length < limit}>Вперед</button>
+            <Pagination
+            defaultPageSize={limit}
+            total={idsCount}
+            showSizeChanger={false}
+            showTotal={(total, range) => `${range[0]}-${range[1]} из ${total} товаров`}
+            onChange={handlePageChange}
+            />
+            {/* <button className={s.btn} onClick={goToPreviousPage} disabled={offsetRef.current < limit}>Назад</button>
+            <button className={s.btn} onClick={goToNextPage} disabled={products?.length < limit}>Вперед</button> */}
         </div>
         <Filters/>
     </div>
