@@ -1,4 +1,4 @@
-import { baseApi } from '../../store/services'
+import { productApi } from '../../store/services'
 import { useEffect } from 'react';
 import { Select, Form } from 'antd';
 import s from "./styles.module.scss"
@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { toggleIsFilter } from '../../store/filterSlice';
 
 export const FilterItem = ({ field }) => {
-  const [getFields, { data: fieldsData }] = baseApi.useGetFieldsMutation()
+  const [getFields, { data: fieldsData }] = productApi.useGetFieldsMutation()
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -29,6 +29,7 @@ export const FilterItem = ({ field }) => {
     <Form.Item name={field} rules={[{ required: true }]}>
       <Select
       className={s.itemSelect}
+      style={{width: 250}}
       options={fieldsData && fieldsData.map(field => { return field === null ? {value: 'without value', label: ' Без значения'} : {value: field, label: field}})}
       allowClear
       onClear={() => dispatch(toggleIsFilter(false))}

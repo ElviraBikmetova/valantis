@@ -1,23 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import md5 from "md5"
 import { LIMIT } from '../constants/constants'
+import { baseApi } from './baseApi'
 
-export const baseApi = createApi({
-    reducerPath: 'baseApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: 'http://api.valantis.store:40000/',
-        prepareHeaders: (headers) => {
-            if (!headers.has("Content-Type")) {
-                headers.set('Content-Type', 'application/json')
-            }
-            const date = new Date()
-            const timestamp = date.toISOString().slice(0, 10).replace(/-/g, '')
-            const xAuth = md5(`Valantis_${timestamp}`)
-            // console.log(xAuth)
-            headers.set('X-Auth', xAuth)
-            return headers
-        },
-    }),
+export const productApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
         getIds: builder.mutation({
             query: ({ offset, limit }) => ({

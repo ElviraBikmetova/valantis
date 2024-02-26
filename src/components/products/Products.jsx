@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { ProductItem } from "./ProductItem";
-import { baseApi } from "../../store/services";
+import { productApi } from "../../store/services";
 import s from "./styles.module.scss"
 import { Filters } from "../filters/Filters";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,10 +10,10 @@ import { LIMIT } from "../../constants/constants";
 
 export function ProductList() {
     const [isFilterVisible, setIsFilterVisible] = useState(false)
-    const [getIdsCount, { data: idsCount }] = baseApi.useGetIdsCountMutation()
-    const [getIds, { data: idsData }] = baseApi.useGetIdsMutation()
-    const [getItems, { data: products }] = baseApi.useGetItemsMutation()
-    const [_, { data: filteredIds }] = baseApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
+    const [getIdsCount, { data: idsCount }] = productApi.useGetIdsCountMutation()
+    const [getIds, { data: idsData }] = productApi.useGetIdsMutation()
+    const [getItems, { data: products }] = productApi.useGetItemsMutation()
+    const [_, { data: filteredIds }] = productApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
     const { isFilter } = useSelector(filter)
     const dispatch = useDispatch()
 

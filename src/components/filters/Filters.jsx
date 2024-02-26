@@ -1,7 +1,7 @@
 import s from "./styles.module.scss"
 import { FIELDS } from "../../constants/constants";
 import { useState } from "react";
-import { baseApi } from "../../store/services";
+import { productApi } from "../../store/services";
 import { useDispatch } from "react-redux";
 import { toggleIsFilter } from "../../store/filterSlice";
 import { FilterItem } from "./FilterItem";
@@ -10,7 +10,7 @@ import { SubmitButton } from "../ui/SubmitButton";
 
 export const Filters = () => {
     const [selectedOption, setSelectedOption] = useState(null)
-    const [filterItems] = baseApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
+    const [filterItems] = productApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
     const dispatch = useDispatch()
     const [form] = Form.useForm()
 
