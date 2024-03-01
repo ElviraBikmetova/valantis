@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
 import md5 from "md5"
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://api.valantis.store:40000/',
+    baseUrl: 'https://api.valantis.store:41000/',
     prepareHeaders: (headers) => {
         if (!headers.has("Content-Type")) {
             headers.set('Content-Type', 'application/json')

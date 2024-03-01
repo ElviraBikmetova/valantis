@@ -68,9 +68,9 @@ export const productApi = baseApi.injectEndpoints({
             transformResponse: (response) => {
                 const uniqueIds = [...new Set(response.result)]
                 if (response.result.length < LIMIT) {
-                    return {isMaxLimit: true, ids: uniqueIds}
+                    return {isMaxLimit: true, isFiltered: true, ids: uniqueIds}
                 }
-                return {isMaxLimit: false, ids: uniqueIds}
+                return {isMaxLimit: false, isFiltered: true, ids: uniqueIds}
             }
         }),
     }),
