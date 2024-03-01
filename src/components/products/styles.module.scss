@@ -1,25 +1,4 @@
-.banner {
-    background-color: rgb(255, 255, 255, 0.5);
-    background-image: url(../../assets/images/banner.jpg);
-    height: 300px;
-    background-position: center;
-    background-size: cover;
-    background-blend-mode: lighten;
-    transform: scaleX(-1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.title {
-    transform: scaleX(-1);
-    font-size: 100px;
-    font-family: "Dancing Script", cursive;
-    font-optical-sizing: auto;
-    font-weight: 700;
-    // line-height: 110%;
-    color: #202329;
-}
+@import '../../styles/variables.scss';
 
 .filter {
     display: flex;
@@ -38,16 +17,19 @@
     flex-wrap: wrap;
 }
 
-.productCard {
+.productCard, .productCardSceleton {
     max-width: 240px;
     height: 220px;
     width: 100%;
     padding: 10px;
-    font-size: 14px;
-    border: 1px solid #E0E0E0;
+    border: 1px solid $colorBorderDefault;
     border-radius: 8px;
+    background-color: $colorBgDefault;
+}
+
+.productCard {
+    font-size: 14px;
     position: relative;
-    background-color: #f4f4f4;
     &::after {
         content: '';
         position: absolute;
@@ -55,26 +37,16 @@
         left: 0;
         width: 100%;
         height: 1px;
-        background-color: #E0E0E0;
+        background-color: $colorBorderDefault;
     }
     &:hover {
-        background-color: #f0f5ff;
+        background-color: $colorBgActive;
         cursor: pointer;
-        border-color: #597ef7;
+        border-color: $colorPrimary;
         .cardTitle {
-            color: #1677ff;
+            color:$colorPrimary;
         }
     }
-}
-
-.productCardSceleton {
-    max-width: 240px;
-    height: 220px;
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #E0E0E0;
-    border-radius: 8px;
-    background-color: #efefef;
 }
 
 .image {
@@ -100,20 +72,7 @@
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     margin-bottom: 20px;
-    // &:hover {
-    //     color: #597ef7;
-    // }
-
 }
-
-// .divider {
-//     position: absolute;
-//     top: 92px;
-//     left: 0;
-//     width: 100%;
-//     height: 1px;
-//     background-color: #E0E0E0;
-// }
 
 .info {
     display: flex;
@@ -148,38 +107,10 @@
 
 .brandName {
     font-weight: 500;
-    color: #002766;
+    color: #873800;
 }
 
 .pagination {
     padding: 20px 0;
     text-align: center;
-}
-
-.footer {
-    background-color: rgb(255, 255, 255, 0.2);
-    background-image: url(../../assets/images/footer.jpg);
-    height: 270px;
-    background-position: center;
-    background-size: cover;
-    background-blend-mode: lighten;
-    display: flex;
-    flex-direction: column;
-    // justify-content: center;
-    align-items: center;
-    row-gap: 20px;
-
-}
-
-.socials {
-    margin-top: 60px;
-    display: flex;
-    gap: 20px;
-}
-
-.social {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1px solid #8C8C8C;
 }

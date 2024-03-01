@@ -1,3 +1,5 @@
+@import "../../styles/variables.scss";
+
 .footer {
     background-color: rgb(255, 255, 255, 0.2);
     background-image: url(../../assets/images/footer.jpg);
@@ -8,7 +10,6 @@
     background-blend-mode: lighten;
     display: flex;
     flex-direction: column;
-    // justify-content: center;
     align-items: center;
     row-gap: 15px;
 
@@ -21,13 +22,9 @@
 }
 
 .social {
-    // width: 40px;
-    // height: 40px;
-    // border-radius: 50%;
-    // border: 1px solid #8C8C8C;
     font-size: 38px;
     color : #8C8C8C;
     &:hover {
-        color : #597ef7;
+        color : $colorPrimary;
     }
 }
