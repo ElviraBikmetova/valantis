@@ -7,91 +7,51 @@ import { useDispatch, useSelector } from "react-redux";
 import { filter, toggleIsFilter } from "../../store/filterSlice";
 import { Button, Pagination } from "antd";
 import { LIMIT } from "../../constants/constants";
-import { Footer } from '../footer/Footer.jsx'
 
 export function Products() {
     const [isFilterVisible, setIsFilterVisible] = useState(false)
-    const [getIdsCount, { data: idsCount }] = productApi.useGetIdsCountMutation()
     const [getIds, { data: idsData }] = productApi.useGetIdsMutation()
     const [getItems, { data: products, isLoading }] = productApi.useGetItemsMutation()
     const [_, { data: filteredIds }] = productApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
     const { isFilter } = useSelector(filter)
     const dispatch = useDispatch()
-
     const offsetRef = useRef(0)
-    const [isBack, setIsBack] = useState(false)
-
+    const offsetFilterRef = useRef(0)
     const [currentPage, setCurrentPage] = useState(1)
     const [currentFilterPage, setCurrentFilterPage] = useState(1)
 
-//   console.log('isBack', isBack)
-
-    const getProducts = (idsData) => {
-        // console.log('idsData.isFiltered', idsData?.isFiltered)
+    const getProducts = (idsData, offset = offsetRef.current, limit = LIMIT) => {
         if (idsData) {
-            if (idsData.ids.length < LIMIT && !idsData.isMaxLimit) {
-                if (isBack) {
-                    getIds({offset: offsetRef.current - (LIMIT - idsData.ids.length), limit: LIMIT + (LIMIT - idsData.ids.length)})
-                    // getItems(idsData.ids)
-                } else {
-                    getIds({offset: offsetRef.current, limit: LIMIT + (LIMIT - idsData.ids.length)})
-                    // getItems(idsData.ids)
-                    offsetRef.current += LIMIT - idsData.ids.length
-                }
-            } else {
-                //TODO - сделать обработку случая, когда дублируются айдишники в товарах и их больше лимита
-                if (idsData.isFiltered) {
-                    // console.log('in if')
-                    const filteredIdsPart = idsData.ids.slice(offsetRef.current, offsetRef.current + LIMIT)
-                    // console.log('filteredIdsPart', filteredIdsPart)
-                    getItems(filteredIdsPart)
-                } else {
-                    getItems(idsData.ids)
-                }
-            }
+            const idsPart = idsData.ids.slice(offset, offset + limit)
+            getItems(idsPart)
         }
     }
 
     useEffect(() => {
-        offsetRef.current = 0
-        setCurrentFilterPage(1)
-        if (!isFilter) {
-            getProducts(idsData)
-        }
-    }, [isFilter])
-
-    useEffect(() => {
-        getIdsCount()
-        getIds({offset: offsetRef.current, limit: LIMIT})
+        getIds()
     }, [])
 
     useEffect(() => {
-        getProducts(isFilter ? filteredIds : idsData)
-    }, [filteredIds, idsData])
+        if (isFilter) {
+            getProducts(filteredIds, offsetFilterRef.current)
+        } else {
+            getProducts(idsData)
+        }
+        setCurrentFilterPage(1)
+        offsetFilterRef.current = 0
+    }, [isFilter, filteredIds, idsData])
 
     const handlePageChange = (page, pageSize) => {
-        // console.log('offsetRef.current in handlePageChange', offsetRef.current)
-        // console.log('page', page)
-
-        const newOffset = (page - 1) * pageSize + (offsetRef.current % pageSize)  // Вычисляем новое смещение
-        if (isFilter && filteredIds) {
+        const newOffset = (page - 1) * pageSize // Вычисляем новое смещение
+        if (isFilter) {
             setCurrentFilterPage(page)
-            const filteredIdsPart = filteredIds.ids.slice(newOffset, newOffset + pageSize)
-            getItems(filteredIdsPart)
+            getProducts(filteredIds, newOffset, pageSize)
+            offsetFilterRef.current = newOffset // Обновляем значение смещения в ref
         } else {
             setCurrentPage(page)
-            getIds({ offset: newOffset, limit: LIMIT })
+            getProducts(idsData, newOffset, pageSize)
+            offsetRef.current = newOffset // Обновляем значение смещения в ref
         }
-
-        if (newOffset < offsetRef.current) {
-            // Движение назад
-            setIsBack(true)
-        } else {
-            // Движение вперёд или на ту же страницу
-            setIsBack(false)
-        }
-
-        offsetRef.current = newOffset // Обновляем значение смещения в ref
     }
 
     const toggleFilterVisible = () => {
@@ -101,15 +61,8 @@ export function Products() {
         }
     }
 
-    // console.log('offsetRef.current', offsetRef.current)
-    // console.log('idsData', idsData)
-    // console.log('filteredIds', filteredIds)
-
     return (
         <>
-            <div className={s.banner}>
-                <h1 className={s.title}>Valantis Jewelry</h1>
-            </div>
             <div className={'container'}>
                 <div className={s.filter}>
                     <Button onClick={toggleFilterVisible} disabled={isLoading}>Фильтр</Button>
@@ -124,7 +77,7 @@ export function Products() {
                     current={isFilter ? currentFilterPage : currentPage}
                     defaultCurrent={1}
                     defaultPageSize={LIMIT}
-                    total={isFilter ? filteredIds?.ids?.length : idsCount}
+                    total={isFilter ? filteredIds?.total : idsData?.total}
                     showSizeChanger={false}
                     showTotal={(total, range) => `${range[0]}-${range[1]} из ${total} товаров`}
                     onChange={handlePageChange}
@@ -132,7 +85,6 @@ export function Products() {
                     />
                 </div>
             </div>
-            <Footer />
         </>
 
     )
