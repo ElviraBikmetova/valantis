@@ -1,44 +1,185 @@
+.banner {
+    background-color: rgb(255, 255, 255, 0.5);
+    background-image: url(../../assets/images/banner.jpg);
+    height: 300px;
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: lighten;
+    transform: scaleX(-1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-
-.wrapper {
-
+.title {
+    transform: scaleX(-1);
+    font-size: 100px;
+    font-family: "Dancing Script", cursive;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    // line-height: 110%;
+    color: #202329;
 }
 
 .filter {
     display: flex;
     justify-content: space-between;
     max-width: 700px;
+    height: 96px;
     width: 100%;
-    // column-gap: 30px;
+    padding: 20px 0;
 }
 
 .list {
     display: flex;
+    justify-content: center;
     width: 100%;
     gap: 15px;
     flex-wrap: wrap;
 }
 
-.productItem {
+.productCard {
     max-width: 240px;
+    height: 220px;
     width: 100%;
     padding: 10px;
     font-size: 14px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    position: relative;
+    background-color: #f4f4f4;
+    &::after {
+        content: '';
+        position: absolute;
+        top: 92px;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background-color: #E0E0E0;
+    }
+    &:hover {
+        background-color: #f0f5ff;
+        cursor: pointer;
+        border-color: #597ef7;
+        .cardTitle {
+            color: #1677ff;
+        }
+    }
 }
 
-.name {
+.productCardSceleton {
+    max-width: 240px;
+    height: 220px;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #E0E0E0;
+    border-radius: 8px;
+    background-color: #efefef;
+}
+
+.image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width:238px;
+    height: 100px;
+    object-fit: cover;
+    object-position: center;
+    border-top-left-radius: 7px;
+    border-top-right-radius: 7px;
+}
+
+.cardTitle {
     text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    height: 72px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    margin-bottom: 20px;
+    // &:hover {
+    //     color: #597ef7;
+    // }
+
+}
+
+// .divider {
+//     position: absolute;
+//     top: 92px;
+//     left: 0;
+//     width: 100%;
+//     height: 1px;
+//     background-color: #E0E0E0;
+// }
+
+.info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.label {
+    margin-bottom: 2px;
+}
+
+.id {
+    font-size: 12px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: text;
+        &:hover {
+        overflow: visible;
+    }
+}
+
+.price {
+    color: #389e0d;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.brand {
+    height: 36px;
+}
+
+.brandName {
+    font-weight: 500;
+    color: #002766;
 }
 
 .pagination {
-    // display: flex;
-    // justify-content: center;
+    padding: 20px 0;
     text-align: center;
 }
 
-.btn {
-    &[disabled] {
-        opacity: 0.9;
-        cursor: not-allowed;
-    }
+.footer {
+    background-color: rgb(255, 255, 255, 0.2);
+    background-image: url(../../assets/images/footer.jpg);
+    height: 270px;
+    background-position: center;
+    background-size: cover;
+    background-blend-mode: lighten;
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    align-items: center;
+    row-gap: 20px;
+
+}
+
+.socials {
+    margin-top: 60px;
+    display: flex;
+    gap: 20px;
+}
+
+.social {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid #8C8C8C;
 }
