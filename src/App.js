@@ -1,12 +1,12 @@
-import { ProductList } from "./components/products/Products";
-import s from './App.module.scss'
+import { Products } from "./components/products/Products"
+import './styles.scss'
 
 function App() {
 
   return (
-    <div className={s.container}>
-      <ProductList/>
-    </div>
+    <main>
+      <Products />
+    </main>
   );
 }
 
