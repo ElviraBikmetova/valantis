@@ -1,6 +1,6 @@
 import { Button, Form } from 'antd';
 import { useEffect, useState } from 'react';
-export const SubmitButton = ({ form, children }) => {
+export const SubmitButton = ({ form, isLoading, children }) => {
     const [submittable, setSubmittable] = useState(false);
 
     // Watch all values
@@ -16,7 +16,7 @@ export const SubmitButton = ({ form, children }) => {
     }, [form, values])
 
     return (
-        <Button htmlType="submit" disabled={!submittable}>
+        <Button htmlType="submit" disabled={!submittable || isLoading}>
         {children}
         </Button>
     )
