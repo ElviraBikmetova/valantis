@@ -1,12 +1,18 @@
+import { Footer } from "./components/footer/Footer";
+import { Header } from "./components/header/Header";
 import { Products } from "./components/products/Products"
 import './styles.scss'
 
 function App() {
 
   return (
-    <main>
-      <Products />
-    </main>
+    <>
+      <Header />
+      <main>
+        <Products />
+      </main>
+      <Footer />
+    </>
   );
 }
 
