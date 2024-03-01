@@ -1,12 +1,12 @@
 import { productApi } from '../../store/services'
 import { useEffect } from 'react';
-import { Select, Form } from 'antd';
+import { Select, Form, Skeleton } from 'antd';
 import s from "./styles.module.scss"
 import { useDispatch } from 'react-redux';
 import { toggleIsFilter } from '../../store/filterSlice';
 
 export const FilterItem = ({ field }) => {
-  const [getFields, { data: fieldsData }] = productApi.useGetFieldsMutation()
+  const [getFields, { data: fieldsData, isLoading }] = productApi.useGetFieldsMutation()
   const dispatch = useDispatch()
 
   // console.log('field', field)
@@ -42,6 +42,7 @@ export const FilterItem = ({ field }) => {
       optionFilterProp="children"
       filterOption={(input, option) => (String(option?.label) || '').includes(input)}
       filterSort={filterSort}
+      notFoundContent={isLoading ? <Skeleton active paragraph={{ rows: 7 }} /> : null}
       />
     </Form.Item>
   )
