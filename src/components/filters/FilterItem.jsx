@@ -9,9 +9,14 @@ export const FilterItem = ({ field }) => {
   const [getFields, { data: fieldsData }] = productApi.useGetFieldsMutation()
   const dispatch = useDispatch()
 
+  // console.log('field', field)
+
+
   useEffect(() => {
       getFields(field)
-  }, [])
+  }, [field])
+
+  // console.log('fieldsData', fieldsData)
 
   const filterSort = (optionA, optionB) => {
     const labelA = optionA?.label;
@@ -26,9 +31,8 @@ export const FilterItem = ({ field }) => {
   }
 
   return (
-    <Form.Item name={field} rules={[{ required: true }]}>
+    <Form.Item name={field} rules={[{ required: true, message: '' }]} validateStatus="success">
       <Select
-      className={s.itemSelect}
       style={{width: 250}}
       options={fieldsData && fieldsData.map(field => { return field === null ? {value: 'without value', label: ' Без значения'} : {value: field, label: field}})}
       allowClear

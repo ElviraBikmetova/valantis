@@ -8,13 +8,18 @@ import { FilterItem } from "./FilterItem";
 import { Form, Select } from "antd";
 import { SubmitButton } from "../ui/SubmitButton";
 
-export const Filters = () => {
-    const [selectedOption, setSelectedOption] = useState(null)
+export const Filters = ({ isLoading }) => {
+    const [selectedOption, setSelectedOption] = useState('')
     const [filterItems] = productApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
     const dispatch = useDispatch()
     const [form] = Form.useForm()
 
+    // console.log('selectedOption', selectedOption)
+
     const onFinish = (values) => {
+        if (values.brand === 'without value') {
+            values.brand = null
+        }
         filterItems(values)
         dispatch(toggleIsFilter(true))
     }
@@ -28,13 +33,15 @@ export const Filters = () => {
             placeholder="Выберите параметр"
             allowClear
             onClear={() => dispatch(toggleIsFilter(false))}
+            disabled={isLoading}
             />
-            <Form form={form} name='validateOnly' onFinish={onFinish} className={s.form} autoComplete="off">
-                {selectedOption && <FilterItem field={selectedOption}/>}
+            {selectedOption &&
+            <Form form={form} name='validateOnly' onFinish={onFinish} className={s.form} autoComplete="off" disabled={isLoading}>
+                <FilterItem field={selectedOption}/>
                 <Form.Item>
-                    <SubmitButton form={form}>Отфильтровать</SubmitButton>
+                    <SubmitButton form={form} isLoading={isLoading}>Отфильтровать</SubmitButton>
                 </Form.Item>
-            </Form>
+            </Form>}
         </div>
     )
 }
