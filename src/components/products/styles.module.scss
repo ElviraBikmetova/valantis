@@ -40,6 +40,7 @@
         background-color: $colorBorderDefault;
     }
     &:hover {
+        transition: 0.3s;
         background-color: $colorBgActive;
         cursor: pointer;
         border-color: $colorPrimary;
@@ -91,7 +92,8 @@
     text-overflow: ellipsis;
     cursor: text;
         &:hover {
-        overflow: visible;
+            transition: 0.3s;
+            overflow: visible;
     }
 }
 
