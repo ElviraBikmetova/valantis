@@ -10,8 +10,8 @@ import { theme } from './theme/theme';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <Provider store={store}>
-    <ConfigProvider theme={theme}>
-      <App />
-    </ConfigProvider>
+      <ConfigProvider theme={theme}>
+        <App />
+      </ConfigProvider>
     </Provider>
 );

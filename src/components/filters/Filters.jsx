@@ -3,18 +3,16 @@ import { FIELDS } from "../../constants/constants";
 import { useState } from "react";
 import { productApi } from "../../store/services";
 import { useDispatch } from "react-redux";
-import { toggleIsFilter } from "../../store/filterSlice";
+import { toggleIsFilter, toggleIsPending } from "../../store/generalSlice";
 import { FilterItem } from "./FilterItem";
 import { Form, Select } from "antd";
 import { SubmitButton } from "../ui/SubmitButton";
 
-export const Filters = ({ isLoading }) => {
+export const Filters = ({ isPending }) => {
     const [selectedOption, setSelectedOption] = useState('')
     const [filterItems] = productApi.useFilterMutation({fixedCacheKey: 'sharedFilter'})
     const dispatch = useDispatch()
     const [form] = Form.useForm()
-
-    // console.log('selectedOption', selectedOption)
 
     const onFinish = (values) => {
         if (values.brand === 'without value') {
@@ -22,6 +20,7 @@ export const Filters = ({ isLoading }) => {
         }
         filterItems(values)
         dispatch(toggleIsFilter(true))
+        dispatch(toggleIsPending(true))
     }
 
     return (
@@ -33,13 +32,13 @@ export const Filters = ({ isLoading }) => {
             placeholder="Выберите параметр"
             allowClear
             onClear={() => dispatch(toggleIsFilter(false))}
-            disabled={isLoading}
+            disabled={isPending}
             />
             {selectedOption &&
-            <Form form={form} name='validateOnly' onFinish={onFinish} className={s.form} autoComplete="off" disabled={isLoading}>
+            <Form form={form} name='validateOnly' onFinish={onFinish} className={s.form} autoComplete="off" disabled={isPending}>
                 <FilterItem field={selectedOption}/>
                 <Form.Item>
-                    <SubmitButton form={form} isLoading={isLoading}>Отфильтровать</SubmitButton>
+                    <SubmitButton form={form} isLoading={isPending}>Отфильтровать</SubmitButton>
                 </Form.Item>
             </Form>}
         </div>
