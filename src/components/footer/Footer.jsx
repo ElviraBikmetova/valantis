@@ -1,5 +1,5 @@
-import s from "./styles.module.scss"
 import cn from 'classnames'
+import s from "./styles.module.scss"
 
 export const Footer = () => {
     const socials = ['iconTelegram', 'iconWhatsapp', 'iconVkontakte', 'iconPinterest', 'iconYoutube']
@@ -9,7 +9,7 @@ export const Footer = () => {
             <div className={s.socials}>
                 {socials.map((social) => <a href="#" key={social} className={cn(s.social, social)} />)}
             </div>
-            <div>© 2024 Valantis Jewelry</div>
+            <div>© {new Date().getFullYear()} Valantis Jewelry</div>
         </footer>
     )
 }

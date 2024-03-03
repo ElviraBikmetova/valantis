@@ -1,12 +1,12 @@
+import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { Form, Select } from "antd"
+import { FIELDS } from "../../constants/constants"
+import { productApi } from "../../store/services"
+import { toggleIsFilter, toggleIsPending } from "../../store/generalSlice"
+import { SubmitButton } from "../ui/SubmitButton"
+import { FilterItem } from "./FilterItem"
 import s from "./styles.module.scss"
-import { FIELDS } from "../../constants/constants";
-import { useState } from "react";
-import { productApi } from "../../store/services";
-import { useDispatch } from "react-redux";
-import { toggleIsFilter, toggleIsPending } from "../../store/generalSlice";
-import { FilterItem } from "./FilterItem";
-import { Form, Select } from "antd";
-import { SubmitButton } from "../ui/SubmitButton";
 
 export const Filters = ({ isPending }) => {
     const [selectedOption, setSelectedOption] = useState('')

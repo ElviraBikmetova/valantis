@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
-import { ProductCard, ProductCardSceleton } from "./ProductCard";
-import { productApi } from "../../store/services";
+import { useEffect, useRef, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { Button, Pagination } from "antd"
+import { productApi } from "../../store/services"
+import { general, toggleIsFilter, toggleIsPending } from "../../store/generalSlice"
+import { LIMIT } from "../../constants/constants"
+import { Filters } from "../filters/Filters"
+import { ProductCard, ProductCardSceleton } from "./ProductCard"
 import s from "./styles.module.scss"
-import { Filters } from "../filters/Filters";
-import { useDispatch, useSelector } from "react-redux";
-import { general, toggleIsFilter, toggleIsPending } from "../../store/generalSlice";
-import { Button, Pagination } from "antd";
-import { LIMIT } from "../../constants/constants";
 
 export function Products() {
     const [isFilterVisible, setIsFilterVisible] = useState(false)
@@ -41,7 +41,6 @@ export function Products() {
         setCurrentFilterPage(1)
         offsetFilterRef.current = 0
     }, [isFilter, filteredIds, idsData])
-
 
     useEffect(() => {
         if (isSuccess) {

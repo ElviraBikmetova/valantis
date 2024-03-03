@@ -1,5 +1,6 @@
-import { Button, Form } from 'antd';
-import { useEffect, useState } from 'react';
+import { Button, Form } from 'antd'
+import { useEffect, useState } from 'react'
+
 export const SubmitButton = ({ form, isLoading, children }) => {
     const [submittable, setSubmittable] = useState(false);
 
