@@ -17,6 +17,11 @@
     flex-wrap: wrap;
 }
 
+.pagination {
+    padding: 20px 0;
+    text-align: center;
+}
+
 .productCard, .productCardSceleton {
     max-width: 240px;
     height: 220px;
@@ -48,18 +53,6 @@
             color:$colorPrimary;
         }
     }
-}
-
-.image {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width:238px;
-    height: 100px;
-    object-fit: cover;
-    object-position: center;
-    border-top-left-radius: 7px;
-    border-top-right-radius: 7px;
 }
 
 .cardTitle {
@@ -110,9 +103,4 @@
 .brandName {
     font-weight: 500;
     color: #873800;
-}
-
-.pagination {
-    padding: 20px 0;
-    text-align: center;
 }
