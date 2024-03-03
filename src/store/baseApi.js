@@ -10,8 +10,6 @@ const baseQuery = fetchBaseQuery({
         const date = new Date()
         const timestamp = date.toISOString().slice(0, 10).replace(/-/g, '')
         const xAuth = md5(`Valantis_${timestamp}`)
-        //TODO remove for production
-        // console.log(xAuth)
         headers.set('X-Auth', xAuth)
         return headers
     },
